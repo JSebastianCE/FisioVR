@@ -8,7 +8,7 @@ public class StickDestroyer : MonoBehaviour
         GameObject objectWeHit = collision.gameObject;
         
         // Intento obtener el componente "DestructibleFairy" de ese objeto
-        DestructibleFairy fairy = objectWeHit.GetComponent<DestructibleFairy>();
+        Fairy fairy = objectWeHit.GetComponent<Fairy>();
         
         //Comprobar si encontramos (si 'fairy' No es null)
         if (fairy != null)
