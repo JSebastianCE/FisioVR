@@ -5,19 +5,21 @@ using System;
 public class StateManager<EState> : MonoBehaviour where EState : Enum
 {
     protected Dictionary<EState, BaseState<EState>> States = new Dictionary<EState, BaseState<EState>>();
-
     protected BaseState<EState> currentState;
-
     bool isTransitioning = false;
 
-    void Start() {
-        currentState.EnterState();
-    }
+    // Eliminamos el método Start() de aquí.
+    // La clase hija se encargará de llamar a EnterState()
 
-    void Update() {
+    void Update()
+    {
+        // Asegurarnos que haya un estado antes de hacer nada
+        if (currentState == null) return;
+
         EState nextStateKey = currentState.GetNextState();
 
-        if(!isTransitioning && nextStateKey.Equals(currentState.stateKey)) {
+        if (!isTransitioning && nextStateKey.Equals(currentState.stateKey))
+        {
             currentState.UpdateState();
         }
         else if (!isTransitioning)
@@ -35,15 +37,19 @@ public class StateManager<EState> : MonoBehaviour where EState : Enum
         isTransitioning = false;
     }
 
-    private void OnTriggerEnter(Collider other) {
-        currentState.OnTriggerEnter(other);
+    // ... (El resto de Triggers se mantiene igual) ...
+    private void OnTriggerEnter(Collider other)
+    {
+        if (currentState != null) currentState.OnTriggerEnter(other);
     }
 
-    private void OnTriggerStay(Collider other) {
-        currentState.OnTriggerStay(other);
+    private void OnTriggerStay(Collider other)
+    {
+        if (currentState != null) currentState.OnTriggerStay(other);
     }
 
-    private void OnTriggerExit(Collider other) { 
-        currentState.OnTriggerExit(other);
+    private void OnTriggerExit(Collider other)
+    {
+        if (currentState != null) currentState.OnTriggerExit(other);
     }
 }

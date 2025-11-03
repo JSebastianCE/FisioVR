@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.Assertions;
-using static CrackStateMachine;
+using UnityEngine.AI; // 1. Importar NavMeshAgent
 
+// 2. Requerir el componente
+[RequireComponent(typeof(NavMeshAgent))]
 public class CrackStateMachine : BaseEnemyStateMachine<CrackStateMachine.ECrackStates>
 {
     public enum ECrackStates
@@ -12,22 +14,42 @@ public class CrackStateMachine : BaseEnemyStateMachine<CrackStateMachine.ECrackS
         Dying
     }
 
+    [Header("Especifico de Grieta")]
+    [SerializeField] public GameObject projectilePrefab; // Asigna tu prefab del "rayo" aquí
+
+    public NavMeshAgent Agent { get; private set; }
     private CrackContext _crackContext;
 
-    [SerializeField] private GameObject crackSpawnVFX;
-
-    private void Awake()
+    protected override void Awake()
     {
-        ValidateParameters();
+        base.Awake();
+        Agent = GetComponent<NavMeshAgent>();
+        _crackContext = new CrackContext(this); // Le pasamos 'this'
 
-        _crackContext = new CrackContext();
+        Agent.speed = velocity;
+        Agent.stoppingDistance = attackRadius;
 
-        InitializeStates(); 
+        InitializeStates();
+        ValidateParameters(); // Validar después de crear el contexto
+    }
+
+    // Start se usa después de que todo está creado
+    protected override void Start()
+    {
+        // 8. ¡LLAMAR AL START DE LA CLASE BASE!
+        //    (Esto inicializa la vida)
+        base.Start();
+
+        // 9. Ahora que todo está listo, activamos el primer estado
+        currentState.EnterState();
     }
 
     private void ValidateParameters()
     {
-        Assert.IsNotNull(crackSpawnVFX, "crackSpawnVFX has not a prefab assign to it.");
+        Assert.IsNotNull(target, "El Target (Player) no se encontró.");
+        Assert.IsNotNull(Agent, "NavMeshAgent component not found.");
+        Assert.IsNotNull(vfxSpawn, "vfxSpawn (en BaseEnemyStateMachine) no está asignado.");
+        Assert.IsNotNull(projectilePrefab, "projectilePrefab (en CrackStateMachine) no está asignado.");
     }
 
     private void InitializeStates()
@@ -36,6 +58,8 @@ public class CrackStateMachine : BaseEnemyStateMachine<CrackStateMachine.ECrackS
         States.Add(ECrackStates.Moving, new Crack_Moving(_crackContext, ECrackStates.Moving));
         States.Add(ECrackStates.Attacking, new Crack_Attacking(_crackContext, ECrackStates.Attacking));
         States.Add(ECrackStates.Dying, new Crack_Dying(_crackContext, ECrackStates.Dying));
+
+        // Asignamos el estado inicial (pero no lo activamos hasta Start)
         currentState = States[ECrackStates.Spawning];
     }
 

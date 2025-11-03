@@ -1,9 +1,10 @@
 using UnityEngine;
 using System;
 
-
 [RequireComponent(typeof(AudioSource))]
-public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum> where TEnum : Enum
+// Implementamos la interfaz IDamageable
+public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum>, IDamageable
+    where TEnum : Enum
 {
     public static event Action<int> OnEnemyDefeated;
 
@@ -14,6 +15,14 @@ public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum> where T
     [Header("Estadísticas de Comportamiento")]
     [SerializeField] public float velocity = 3f;
     [SerializeField] public float attackRadius = 2f;
+    [SerializeField] public float attackCooldown = 2.0f;
+    [SerializeField] public float attackDamage = 10f;
+
+    [Header("Comportamiento Errático (Wander)")]
+    [Tooltip("Cada cuántos segundos el enemigo recalcula su ruta")]
+    [SerializeField] public float wanderInterval = 2.0f;
+    [Tooltip("Qué tan lejos del jugador (o de su ruta) puede desviarse al recalcular")]
+    [SerializeField] public float wanderRadius = 5.0f;
 
     [Header("Feedback Base (Audio)")]
     [SerializeField] public AudioClip sfxSpawn;
@@ -34,48 +43,35 @@ public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum> where T
     // --- Métodos de Unity (Virtuales) ---
     protected virtual void Awake()
     {
-        // Lógica de Awake del BaseEnemy (obtener componentes, etc.)
         audioSource = GetComponent<AudioSource>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
-
-        // La clase hija (CrackStateMachine) será responsable de
-        // crear su diccionario de estados y pasarlo al StateManager base.
     }
 
+    // Hacemos este Start virtual para que las clases hijas lo llamen
     protected virtual void Start()
     {
-        // Lógica de Start del BaseEnemy (establecer vida)
         currentLife = _initialHealth;
-
-        // La clase hija (CrackStateMachine) será responsable de
-        // establecer el estado inicial.
+        // El estado inicial lo debe activar la clase hija (CrackStateMachine)
+        // después de inicializar los estados
     }
 
+    // --- Implementación de la Interfaz ---
     public virtual void TakeDamage(float quantity)
     {
-        // 4. Obtenemos el *enum* del estado de muerte
         TEnum deathState = GetDeathStateEnum();
 
-        // 5. Asumimos que el StateManager<TEnum> base expone el enum del estado actual
-        //    (Ej. una propiedad llamada 'CurrentStateKey').
-        //    Necesitamos esta comprobación para no "morir" varias veces.
-        if (currentStateKey.Equals(deathState)) return;
+        // Corrección: Comparamos con la 'stateKey' del estado actual
+        if (currentState.stateKey.Equals(deathState)) return;
 
         currentLife -= quantity;
         PlaySound(sfxDamageTaken);
 
         if (currentLife <= 0)
         {
-            // 6. Usamos el método 'CambiarEstado' del StateManager base,
-            //    que (asumimos) acepta el TEnum.
             TransitionToState(deathState);
         }
     }
 
-    /// <summary>
-    /// 7. El método abstracto ahora obliga a las clases hijas
-    /// a devolver el *valor del enum* que representa la muerte.
-    /// </summary>
     protected abstract TEnum GetDeathStateEnum();
 
     public void ReportScore()
@@ -83,11 +79,7 @@ public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum> where T
         OnEnemyDefeated?.Invoke(scorePoints);
     }
 
-    // 8. ¡Ya no necesitamos el método 'CambiarEstado(BaseState)'!
-    //    Confiamos en que la clase base StateManager<TEnum>
-    //    proporciona 'CambiarEstado(TEnum newStateKey)'.
-
-    // --- Métodos Helper (Llamados por el Contexto) ---
+    // --- Métodos Helper ---
     public void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)

@@ -1,14 +1,12 @@
 using UnityEngine;
-using UnityEngine.AI;
 
-public class CrackContext
+public class FairyContext
 {
     // Guardamos una referencia al "dueño" de los datos
-    private readonly CrackStateMachine _machine;
+    private readonly FairyStateMachine _machine;
 
     // --- Constructor ---
-    // Recibe el StateMachine para poder acceder a sus variables
-    public CrackContext(CrackStateMachine machine)
+    public FairyContext(FairyStateMachine machine)
     {
         _machine = machine;
     }
@@ -16,8 +14,7 @@ public class CrackContext
     // --- Referencias de Componentes ---
     public Transform Transform => _machine.transform;
     public Transform Target => _machine.target;
-    public NavMeshAgent Agent => _machine.Agent;
-    public GameObject ProjectilePrefab => _machine.projectilePrefab;
+    // No hay NavMeshAgent
 
     // --- Estadísticas ---
     public float Velocity => _machine.velocity;
@@ -41,10 +38,8 @@ public class CrackContext
     public GameObject VfxPlayerDamage => _machine.vfxPlayerDamage;
 
     // --- Métodos Helper ---
-    // Los estados ahora pueden llamar a estos métodos
     public void PlaySound(AudioClip clip) => _machine.PlaySound(clip);
     public void InstantiateVFX(GameObject vfx, Vector3 position) => _machine.InstantiateVFX(vfx, position);
     public void ReportScore() => _machine.ReportScore();
-    // (Opcional) Los estados también podrían llamar a TakeDamage
     public void TakeDamage(float q) => _machine.TakeDamage(q);
 }

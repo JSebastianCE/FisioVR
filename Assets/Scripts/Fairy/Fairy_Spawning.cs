@@ -1,36 +1,30 @@
 using UnityEngine;
 
-public class Crack_Spawning : CrackBaseState
+public class Fairy_Spawning : FairyBaseState
 {
     private float _spawnTimer;
     private const float SPAWN_DURATION = 1.5f; // Duración del spawn en segundos
 
-    public Crack_Spawning(CrackContext context, CrackStateMachine.ECrackStates eState) : base(context, eState) { }
+    public Fairy_Spawning(FairyContext context, FairyStateMachine.EFairyStates eState) : base(context, eState) { }
 
     public override void EnterState()
     {
-        // Usamos el Contexto para reproducir sonido y VFX
         context.PlaySound(context.SfxSpawn);
         context.InstantiateVFX(context.VfxSpawn, context.Transform.position);
-
         _spawnTimer = SPAWN_DURATION;
     }
 
     public override void UpdateState()
     {
-        // Contamos hacia atrás
         _spawnTimer -= Time.deltaTime;
     }
 
-    public override CrackStateMachine.ECrackStates GetNextState()
+    public override FairyStateMachine.EFairyStates GetNextState()
     {
-        // Si el timer llega a cero, transicionamos a Moving
         if (_spawnTimer <= 0f)
         {
-            return CrackStateMachine.ECrackStates.Moving;
+            return FairyStateMachine.EFairyStates.Moving;
         }
-
-        // Si no, nos quedamos en este estado
         return stateKey;
     }
 

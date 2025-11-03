@@ -2,6 +2,28 @@ using UnityEngine;
 
 public class StickDestroyer : MonoBehaviour
 {
+    [SerializeField] private float damageAmount = 10f;
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Guardar el objeto que golpea en una variable
+        GameObject objectWeHit = collision.gameObject;
+
+        // Intentamos obtener CUALQUIER componente que sea "Dañable"
+        IDamageable enemy = objectWeHit.GetComponent<IDamageable>();
+
+        // Comprobar si encontramos la interfaz
+        if (enemy != null)
+        {
+            // Llamamos al método de la interfaz
+            enemy.TakeDamage(damageAmount);
+        }
+    }
+}
+
+/*
+public class StickDestroyer : MonoBehaviour
+{
     void OnCollisionEnter(Collision collision)
     {
         //Guardar el objeto que golpea en una varible
@@ -20,4 +42,6 @@ public class StickDestroyer : MonoBehaviour
         
         
     }
+    
 }
+*/
