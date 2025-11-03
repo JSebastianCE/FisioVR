@@ -26,7 +26,7 @@ public class StateManager<EState> : MonoBehaviour where EState : Enum
         }
     }
 
-    void TransitionToState(EState nextStateKey)
+    protected void TransitionToState(EState nextStateKey)
     {
         isTransitioning = true;
         currentState.ExitState();
