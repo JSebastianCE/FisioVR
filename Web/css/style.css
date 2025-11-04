@@ -1,0 +1,16 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+main#app-root {
+    width: 100%;
+    max-width: 420px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
