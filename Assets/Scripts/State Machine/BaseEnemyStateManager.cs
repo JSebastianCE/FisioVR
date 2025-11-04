@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(AudioSource))]
-// Implementamos la interfaz IDamageable
 public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum>, IDamageable
     where TEnum : Enum
 {
@@ -45,14 +44,16 @@ public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum>, IDamag
     {
         audioSource = GetComponent<AudioSource>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        if(target == null)
+        {
+            Debug.LogError("Player not found in the scene. Please ensure there is a GameObject with the 'Player' tag.");
+        }
     }
 
-    // Hacemos este Start virtual para que las clases hijas lo llamen
+    // Start virtual para que las clases hijas lo llamen
     protected virtual void Start()
     {
         currentLife = _initialHealth;
-        // El estado inicial lo debe activar la clase hija (CrackStateMachine)
-        // después de inicializar los estados
     }
 
     // --- Implementación de la Interfaz ---

@@ -21,7 +21,6 @@ public class Crack_Moving : CrackBaseState
     {
         _recalculateTimer -= Time.deltaTime;
 
-        // 1. ¿Toca recalcular?
         // (Si se acaba el timer O si ya llegamos a nuestro punto temporal)
         if (_recalculateTimer <= 0f || (context.Agent.isOnNavMesh && !context.Agent.pathPending && context.Agent.remainingDistance < 1.0f))
         {
@@ -32,15 +31,15 @@ public class Crack_Moving : CrackBaseState
 
     private void SetNewWanderDestination()
     {
-        // 1. Un punto aleatorio EN UNA ESFERA alrededor del jugador
+        // Un punto aleatorio EN UNA ESFERA alrededor del jugador
         Vector3 randomPoint = Random.insideUnitSphere * context.WanderRadius;
         randomPoint += context.Target.position;
 
-        // 2. Encontrar el punto más cercano en el NavMesh a ese punto aleatorio
+        // Encontrar el punto más cercano en el NavMesh a ese punto aleatorio
         NavMeshHit navHit;
         if (NavMesh.SamplePosition(randomPoint, out navHit, context.WanderRadius * 1.5f, NavMesh.AllAreas))
         {
-            // 3. ¡Ir a ese punto, NO al jugador!
+            // Va a ese punto para hacer wander sin ir directo al player
             if (context.Agent.isOnNavMesh)
             {
                 context.Agent.SetDestination(navHit.position);
@@ -48,7 +47,7 @@ public class Crack_Moving : CrackBaseState
         }
         else
         {
-            // Si falla (raro), simplemente vamos hacia el jugador
+            // Si falla simplemente vamos hacia el jugador
             if (context.Agent.isOnNavMesh)
             {
                 context.Agent.SetDestination(context.Target.position);
