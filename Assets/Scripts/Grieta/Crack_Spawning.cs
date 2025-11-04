@@ -3,7 +3,7 @@ using UnityEngine;
 public class Crack_Spawning : CrackBaseState
 {
     private float _spawnTimer;
-    private const float SPAWN_DURATION = 1.5f; // Duración del spawn en segundos
+    private const float SPAWN_DURATION = 1.5f;
 
     public Crack_Spawning(CrackContext context, CrackStateMachine.ECrackStates eState) : base(context, eState) { }
 

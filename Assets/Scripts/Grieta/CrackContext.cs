@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class CrackContext
 {
-    // Guardamos una referencia al "dueño" de los datos
+    // Referencia al StateMachine
     private readonly CrackStateMachine _machine;
 
     // --- Constructor ---
@@ -41,10 +41,8 @@ public class CrackContext
     public GameObject VfxPlayerDamage => _machine.vfxPlayerDamage;
 
     // --- Métodos Helper ---
-    // Los estados ahora pueden llamar a estos métodos
     public void PlaySound(AudioClip clip) => _machine.PlaySound(clip);
     public void InstantiateVFX(GameObject vfx, Vector3 position) => _machine.InstantiateVFX(vfx, position);
     public void ReportScore() => _machine.ReportScore();
-    // (Opcional) Los estados también podrían llamar a TakeDamage
-    public void TakeDamage(float q) => _machine.TakeDamage(q);
+    public void TakeDamage(float damage) => _machine.TakeDamage(damage);
 }
