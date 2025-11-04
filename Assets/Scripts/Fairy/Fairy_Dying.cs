@@ -2,34 +2,34 @@ using UnityEngine;
 
 public class Fairy_Dying : FairyBaseState
 {
+    private const float DESTROY_DELAY = 2.0f; // 2 segundos para el VFX de explosión
+
     public Fairy_Dying(FairyContext context, FairyStateMachine.EFairyStates eState) : base(context, eState) { }
 
     public override void EnterState()
     {
-        // 1. Avisar al GameManager/HUD que sume puntos
+        // Reportar el puntaje al GameManager/HUD
         context.ReportScore();
 
-        // (Aquí podrías añadir un VFX de muerte o un sonido)
-
-        // 2. Desactivar colisionadores para que no reciba más daño
+        // Desactivar el colisionador
         Collider collider = context.Transform.GetComponent<Collider>();
         if (collider != null)
         {
             collider.enabled = false;
         }
 
-        // 3. Destruir el GameObject después de 2 segundos
-        Object.Destroy(context.Transform.gameObject, 2f);
+        // Destruir el GameObject después del delay
+        Object.Destroy(context.Transform.gameObject, DESTROY_DELAY);
     }
 
     public override void UpdateState()
     {
-        // No hacer nada mientras morimos
+        
     }
 
     public override FairyStateMachine.EFairyStates GetNextState()
     {
-        // Quedarse en este estado hasta ser destruido
+        // Estado final
         return stateKey;
     }
 
