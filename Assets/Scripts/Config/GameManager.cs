@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     // --- Métodos de Setup (omitiendo código repetido) ---
     private void Awake() { /* ... */ if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); } else { Destroy(gameObject); } }
-    private void Start() { /* ... */ InitializeEnemyCountInputs(); }
+    private void Start() { /* ... */ InitializeEnemyCountInputs();  }
     private void InitializeEnemyCountInputs() { /* ... */ }
 
     // --- 1. Método de Control de Tiempo (Solo String) ---
@@ -85,4 +85,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(nombreEscenaJuego);
     }
+
+
 }

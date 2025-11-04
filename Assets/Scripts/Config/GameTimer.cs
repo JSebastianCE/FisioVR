@@ -1,8 +1,11 @@
 using UnityEngine;
 using TMPro; 
 
+
 public class GameTimer : MonoBehaviour
 {
+    public float TiempoRestante => tiempoRestante;
+
     [Header("Referencias")]
 
     public TextMeshProUGUI timerText; 
@@ -69,7 +72,21 @@ public class GameTimer : MonoBehaviour
     void FinalizarPartida()
     {
         Debug.Log("--- ¡TIEMPO AGOTADO! Partida Finalizada. ---");
-        
 
+        // Score actual (si no hay bridge, queda 0)
+        int score = 0;
+        var bridge = FindObjectOfType<EnemyHUDBridge>();
+        if (bridge != null) score = bridge.TotalScore;
+
+        // Tiempo total de la sesión (lo que configuraste al inicio)
+        float tiempoTotal = GameManager.Instance ? GameManager.Instance.tiempoPartidaSegundos : 0f;
+
+        // Mostrar resumen
+        var summary = FindObjectOfType<PostGameSummary>(true);
+        if (summary != null) summary.Show(score, tiempoTotal);
+
+        // Aquí no reiniciamos escena, ni mostramos botones.
     }
+
+
 }
