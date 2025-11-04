@@ -250,11 +250,11 @@ MonoBehaviour:
   attackDamage: 10
   wanderInterval: 2
   wanderRadius: 5
-  sfxSpawn: {fileID: 0}
-  sfxMoving: {fileID: 0}
-  sfxAttack: {fileID: 0}
-  sfxDamageTaken: {fileID: 0}
-  sfxPlayerDamage: {fileID: 0}
-  vfxSpawn: {fileID: 0}
-  vfxPlayerDamage: {fileID: 0}
+  sfxSpawn: {fileID: 8300000, guid: b7f8695cf65a4f24eb37544298821146, type: 3}
+  sfxMoving: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
+  sfxAttack: {fileID: 8300000, guid: 21c4a490b24ba2045bc815f7626a40ef, type: 3}
+  sfxDamageTaken: {fileID: 8300000, guid: b7b5a6156961bac44a67504d42ce6fcf, type: 3}
+  sfxPlayerDamage: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  vfxSpawn: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
+  vfxPlayerDamage: {fileID: 5824670795371433373, guid: f6fd568b816c64943a44efc3add3a881, type: 3}
   projectilePrefab: {fileID: 9089557331850206, guid: 4dc0c0e03f8b5ba4aab87b854a6eecfb, type: 3}
