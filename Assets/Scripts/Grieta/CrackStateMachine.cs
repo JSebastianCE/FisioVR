@@ -15,7 +15,7 @@ public class CrackStateMachine : BaseEnemyStateMachine<CrackStateMachine.ECrackS
     }
 
     [Header("Especifico de Grieta")]
-    [SerializeField] public GameObject projectilePrefab; // Asigna tu prefab del "rayo" aquí
+    [SerializeField] public GameObject projectilePrefab;
 
     public NavMeshAgent Agent { get; private set; }
     private CrackContext _crackContext;
@@ -24,23 +24,21 @@ public class CrackStateMachine : BaseEnemyStateMachine<CrackStateMachine.ECrackS
     {
         base.Awake();
         Agent = GetComponent<NavMeshAgent>();
-        _crackContext = new CrackContext(this); // Le pasamos 'this'
+        _crackContext = new CrackContext(this);
 
         Agent.speed = velocity;
         Agent.stoppingDistance = attackRadius;
 
         InitializeStates();
-        ValidateParameters(); // Validar después de crear el contexto
+        ValidateParameters();
     }
 
     // Start se usa después de que todo está creado
     protected override void Start()
     {
-        // 8. ¡LLAMAR AL START DE LA CLASE BASE!
         //    (Esto inicializa la vida)
         base.Start();
 
-        // 9. Ahora que todo está listo, activamos el primer estado
         currentState.EnterState();
     }
 
@@ -59,7 +57,6 @@ public class CrackStateMachine : BaseEnemyStateMachine<CrackStateMachine.ECrackS
         States.Add(ECrackStates.Attacking, new Crack_Attacking(_crackContext, ECrackStates.Attacking));
         States.Add(ECrackStates.Dying, new Crack_Dying(_crackContext, ECrackStates.Dying));
 
-        // Asignamos el estado inicial (pero no lo activamos hasta Start)
         currentState = States[ECrackStates.Spawning];
     }
 
