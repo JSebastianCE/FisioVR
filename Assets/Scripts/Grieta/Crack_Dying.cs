@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Crack_Dying : CrackBaseState
 {
-    private const float DESTROY_DELAY = 2.0f; // 2 segundos para cualquier animación/VFX de muerte
+    private const float delay = 2.0f; // 2 segundos para cualquier animación/VFX de muerte
 
     public Crack_Dying(CrackContext context, CrackStateMachine.ECrackStates eState) : base(context, eState) { }
 
     public override void EnterState()
     {
-        // 1. Reportar el puntaje al GameManager/HUD
+        // Reportar el puntaje al GameManager/HUD
         context.ReportScore();
 
         // context.PlaySound(context.SfxMuerte);
@@ -20,7 +20,7 @@ public class Crack_Dying : CrackBaseState
             context.Agent.ResetPath(); // Limpiar su ruta
         }
 
-        // 3. Desactivar el colisionador para no recibir más golpes
+        // Desactivar el colisionador para no recibir más golpes
         Collider collider = context.Transform.GetComponent<Collider>();
         if (collider != null)
         {
@@ -29,7 +29,7 @@ public class Crack_Dying : CrackBaseState
 
         // Destruir el GameObject después del delay
         // Usamos Object.Destroy porque esta clase no es un MonoBehaviour
-        Object.Destroy(context.Transform.gameObject, DESTROY_DELAY);
+        Object.Destroy(context.Transform.gameObject, delay);
     }
 
     public override void UpdateState()

@@ -61,7 +61,6 @@ public abstract class BaseEnemyStateMachine<TEnum> : StateManager<TEnum>, IDamag
     {
         TEnum deathState = GetDeathStateEnum();
 
-        // Corrección: Comparamos con la 'stateKey' del estado actual
         if (currentState.stateKey.Equals(deathState)) return;
 
         currentLife -= quantity;

@@ -37,7 +37,6 @@ public class StateManager<EState> : MonoBehaviour where EState : Enum
         isTransitioning = false;
     }
 
-    // ... (El resto de Triggers se mantiene igual) ...
     private void OnTriggerEnter(Collider other)
     {
         if (currentState != null) currentState.OnTriggerEnter(other);
