@@ -129,7 +129,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!82 &5516871613699665004
 AudioSource:
   m_ObjectHideFlags: 0
@@ -247,10 +247,10 @@ MonoBehaviour:
   attackDamage: 10
   wanderInterval: 2
   wanderRadius: 5
-  sfxSpawn: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
+  sfxSpawn: {fileID: 8300000, guid: f2236c9bb1f809f45af6d457ac7f76c2, type: 3}
   sfxMoving: {fileID: 8300000, guid: 8ff2a2d7e79f81c40ac447512f879374, type: 3}
   sfxAttack: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
-  sfxDamageTaken: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  sfxDamageTaken: {fileID: 8300000, guid: 581b260ee02b53642942b4c17d34b0be, type: 3}
   sfxPlayerDamage: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
   vfxSpawn: {fileID: 1590415177872986601, guid: acdb90624a404aa438447006f1026065, type: 3}
   vfxPlayerDamage: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
